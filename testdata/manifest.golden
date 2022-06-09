@@ -1,0 +1,6 @@
+package openconfig
+
+// This file is a placeholder in order to ensure that Go does not
+// find this directory to contain an empty package.
+
+//go:generate ../../../build-tools/generator -path=../../..models/openconfig  -package_name=openconfig  -output_file=./yang.go   ../../../models/openconfig/release/models/local-routing/openconfig-local-routing.yang  ../../../models/openconfig/release/models/system/openconfig-messages.yang 

@@ -1,0 +1,11 @@
+--- 
+generator_options: 
+  - option: package_name
+    value: openconfig
+  - option: output_file 
+    value: ./yang.go 
+models: 
+  - ../../../models/openconfig/release/models/local-routing/openconfig-local-routing.yang
+  - ../../../models/openconfig/release/models/system/openconfig-messages.yang
+path_to_generator: ../../../build-tools/generator
+path_to_models: ../../..models/openconfig

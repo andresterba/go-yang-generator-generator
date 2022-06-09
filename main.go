@@ -39,12 +39,11 @@ func main() {
 	inputPath := providedArgs[1]
 	outputPath := providedArgs[2]
 
-	manifest, err := readManifest(inputPath)
+	err := generateYgotGeneratorFileFromInput(inputPath, outputPath)
 	if err != nil {
 		panic(err)
 	}
 
-	executeAndWriteManifest(outputPath, manifest)
 }
 
 func showHelp() {
@@ -54,15 +53,29 @@ go-yang-generator-generator <path-to-input-file> <path-to-output-file>`)
 	os.Exit(1)
 }
 
+func generateYgotGeneratorFileFromInput(inputPath string, outputPath string) error {
+	manifest, err := readManifest(inputPath)
+	if err != nil {
+		return err
+	}
+
+	err = executeAndWriteManifest(outputPath, manifest)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func readManifest(path string) (*Manifest, error) {
 	config := Manifest{}
 
-	dat, err := os.ReadFile(path)
+	readManifest, err := os.ReadFile(path)
 	if err != nil {
 		panic(err)
 	}
 
-	err = yaml.Unmarshal(dat, &config)
+	err = yaml.Unmarshal(readManifest, &config)
 	if err != nil {
 		panic(err)
 	}
@@ -71,7 +84,7 @@ func readManifest(path string) (*Manifest, error) {
 }
 
 func executeAndWriteManifest(path string, manifest *Manifest) error {
-	t1 := template.New("test")
+	t1 := template.New("template")
 	t1parsed, err := t1.Parse(generatorTemplate)
 	if err != nil {
 		panic(err)
