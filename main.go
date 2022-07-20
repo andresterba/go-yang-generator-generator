@@ -8,7 +8,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var generatorTemplate = `package openconfig
+var generatorTemplate = `package {{.PackageName}}
 
 // This file is a placeholder in order to ensure that Go does not
 // find this directory to contain an empty package.

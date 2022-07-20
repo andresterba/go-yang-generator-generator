@@ -1,4 +1,5 @@
 --- 
+package_name: openconfig
 generator_options: 
   - option: package_name
     value: openconfig
