@@ -1,7 +1,5 @@
 ---
 generator_options:
-  - option: package_name
-    value: openconfig
   - option: output_file
     value: ./yang.go
 models:

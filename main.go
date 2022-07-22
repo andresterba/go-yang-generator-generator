@@ -8,7 +8,15 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var generatorTemplate = `package {{.PackageName}}
+var generatorTemplate = `
+{{- $package_name := "ocstructs" -}}
+{{range .GeneratorOptions -}}
+    {{ if eq .Option "package_name" -}}
+        {{$package_name = .Value -}}
+        {{break -}}
+    {{end -}}
+{{end -}}
+package {{$package_name}}
 
 // This file is a placeholder in order to ensure that Go does not
 // find this directory to contain an empty package.
@@ -22,7 +30,6 @@ type GeneratorOptions struct {
 }
 
 type Manifest struct {
-	PackageName      string             `yaml:"package_name,omitempty"`
 	PathToGenerator  string             `yaml:"path_to_generator,omitempty"`
 	PathToModels     string             `yaml:"path_to_models,omitempty"`
 	GeneratorOptions []GeneratorOptions `yaml:"generator_options,omitempty"`
