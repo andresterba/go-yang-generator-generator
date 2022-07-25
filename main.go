@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"text/template"
-
-	"gopkg.in/yaml.v2"
 )
 
 var generatorTemplate = `package {{.PackageName}}
@@ -16,18 +14,6 @@ var generatorTemplate = `package {{.PackageName}}
 //go:generate {{.PathToGenerator}} -path={{.PathToModels}} {{range .GeneratorOptions}} -{{.Option}}={{.Value}} {{end}} {{range .Models}} {{.}} {{end}}
 `
 
-type GeneratorOptions struct {
-	Option string `yaml:"option,omitempty"`
-	Value  string `yaml:"value,omitempty"`
-}
-
-type Manifest struct {
-	PackageName      string             `yaml:"package_name,omitempty"`
-	PathToGenerator  string             `yaml:"path_to_generator,omitempty"`
-	PathToModels     string             `yaml:"path_to_models,omitempty"`
-	GeneratorOptions []GeneratorOptions `yaml:"generator_options,omitempty"`
-	Models           []string           `yaml:"models,omitempty"`
-}
 
 func main() {
 	providedArgs := os.Args
@@ -54,7 +40,7 @@ go-yang-generator-generator <path-to-input-file> <path-to-output-file>`)
 }
 
 func generateYgotGeneratorFileFromInput(inputPath string, outputPath string) error {
-	manifest, err := readManifest(inputPath)
+	manifest, err := readConfiguration(inputPath)
 	if err != nil {
 		return err
 	}
@@ -66,24 +52,7 @@ func generateYgotGeneratorFileFromInput(inputPath string, outputPath string) err
 
 	return nil
 }
-
-func readManifest(path string) (*Manifest, error) {
-	config := Manifest{}
-
-	readManifest, err := os.ReadFile(path)
-	if err != nil {
-		panic(err)
-	}
-
-	err = yaml.Unmarshal(readManifest, &config)
-	if err != nil {
-		panic(err)
-	}
-
-	return &config, nil
-}
-
-func executeAndWriteManifest(path string, manifest *Manifest) error {
+func executeAndWriteManifest(path string, manifest *Configuration) error {
 	t1 := template.New("template")
 	t1parsed, err := t1.Parse(generatorTemplate)
 	if err != nil {
