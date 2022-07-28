@@ -21,15 +21,18 @@ func TestGenerateFiles(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, path := range paths {
-		_, filename := filepath.Split(path)
-		testname := filename[:len(filename)-len(filepath.Ext(path))]
+	for _, configurationPath := range paths {
+		_, filename := filepath.Split(configurationPath)
+		testname := filename[:len(filename)-len(filepath.Ext(configurationPath))]
 		// Each path turns into a test: the test name is the filename without the
 		// extension.
 		t.Run(testname, func(t *testing.T) {
 			outputFile := filepath.Join("testdata", testname+".generated")
 			defer deleteGeneratedFiles(t, outputFile)
-			generateYgotGeneratorFileFromInput(path, outputFile)
+			err := generateYgotGeneratorFileFromInput(configurationPath, outputFile)
+			if err != nil {
+				t.Fatal(err)
+			}
 
 			// Each input file is expected to have a "golden output" file, with the
 			// same path except the .input extension is replaced by .golden

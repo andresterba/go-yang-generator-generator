@@ -1,9 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"gopkg.in/yaml.v2"
+)
+
+const (
+	packageNameOptionKey = "package_name"
 )
 
 type GeneratorOptions struct {
@@ -24,13 +29,35 @@ func readConfiguration(path string) (*Configuration, error) {
 
 	readManifest, err := os.ReadFile(path)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	err = yaml.Unmarshal(readManifest, &config)
 	if err != nil {
-		panic(err)
+		return nil, err
+	}
+
+	err = config.Validate()
+	if err != nil {
+		return nil, err
 	}
 
 	return &config, nil
+}
+
+func (c *Configuration) Validate() error {
+	for _, option := range c.GeneratorOptions {
+		if option.Option == packageNameOptionKey {
+			return fmt.Errorf("global package_name and generator_option for package_name is set! This option will be infered from package_name in your global configuration, so there is no need to set it explicitly")
+		}
+	}
+
+	packageNameGeneratorOption := GeneratorOptions{
+		Option: packageNameOptionKey,
+		Value:  c.PackageName,
+	}
+
+	c.GeneratorOptions = append(c.GeneratorOptions, packageNameGeneratorOption)
+
+	return nil
 }

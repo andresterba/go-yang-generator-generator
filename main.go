@@ -39,8 +39,8 @@ go-yang-generator-generator <path-to-input-file> <path-to-output-file>`)
 	os.Exit(1)
 }
 
-func generateYgotGeneratorFileFromInput(inputPath string, outputPath string) error {
-	manifest, err := readConfiguration(inputPath)
+func generateYgotGeneratorFileFromInput(configurationPath string, outputPath string) error {
+	manifest, err := readConfiguration(configurationPath)
 	if err != nil {
 		return err
 	}

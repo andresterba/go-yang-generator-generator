@@ -9,8 +9,6 @@ A tool used to configure the [ygot](https://github.com/openconfig/ygot#generatin
 ```yaml
 ---
 generator_options:
-  - option: package_name
-    value: openconfig
   - option: output_file
     value: ./yang.go
   - option: include_model_data
