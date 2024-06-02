@@ -28,7 +28,7 @@ path_to_generator: ../../../build-tools/generator
 path_to_models: ../../../models/openconfig
 ```
 
-2. Let `go-ygot-generator-generator` generate to go file that can be used with `go generate`.
+2. Let `go-ygot-generator-generator` generate the go file that can be used with `go generate`.
 
 ```sh
 	go-yang-generator-generator test.yaml test.go
