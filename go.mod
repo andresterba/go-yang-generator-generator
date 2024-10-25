@@ -1,5 +1,5 @@
 module github.com/andresterba/go-ygot-generator-generator
 
-go 1.22
+go 1.23
 
-require gopkg.in/yaml.v2 v2.4.0
+require gopkg.in/yaml.v3 v3.0.1
